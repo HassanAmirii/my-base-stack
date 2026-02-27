@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>MECHANISM — Systems Learning Platform</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header id="top-bar">
+      <div id="logo">⚙ MECHANISM</div>
+      <nav id="track-nav">
+        <button class="track-btn active" data-track="t1">
+          Track 1 · From Nothing to Computer
+        </button>
+        <button class="track-btn" data-track="t2">
+          Track 2 · Backend from First Principles
+        </button>
+      </nav>
+      <div id="step-controls">
+        <button id="btn-reset" title="Reset">↺ Reset</button>
+        <button id="btn-step" title="Step">▶| Step</button>
+        <button id="btn-run" title="Run">▶ Run</button>
+        <span id="step-counter">step 0</span>
+        <label
+          >Speed
+          <input
+            type="range"
+            id="speed-slider"
+            min="100"
+            max="2000"
+            value="600"
+            step="100"
+        /></label>
+      </div>
+    </header>
+
+    <div id="app-body">
+      <nav id="module-list">
+        <div class="track-label" id="t1-label">Track 1 · Hardware</div>
+        <div id="t1-modules"></div>
+        <div class="track-label" id="t2-label" style="display: none">
+          Track 2 · Backend
+        </div>
+        <div id="t2-modules" style="display: none"></div>
+      </nav>
+
+      <main id="stage">
+        <div id="stage-placeholder">
+          <div class="placeholder-inner">
+            <div class="placeholder-icon">⚙</div>
+            <h2>Select a module to begin</h2>
+            <p>
+              Each module is a runnable simulation.<br />Use
+              <strong>Step</strong> to advance one tick at a time,<br />or
+              <strong>Run</strong> to let it animate.
+            </p>
+          </div>
+        </div>
+      </main>
+
+      <aside id="inspector">
+        <section class="panel" id="state-panel">
+          <h3>▸ State</h3>
+          <pre id="state-dump">—</pre>
+        </section>
+        <section class="panel" id="control-panel">
+          <h3>▸ Controls</h3>
+          <div id="dynamic-controls"><em>Select a module</em></div>
+        </section>
+        <section class="panel" id="failure-panel">
+          <h3>▸ Inject Failure</h3>
+          <div id="failure-controls"><em>No module loaded</em></div>
+        </section>
+        <section class="panel" id="log-panel">
+          <h3>▸ Event Log</h3>
+          <ul id="event-log"></ul>
+        </section>
+      </aside>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

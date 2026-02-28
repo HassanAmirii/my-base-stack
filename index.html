@@ -2,28 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0d0f14" />
     <title>MECHANISM — Systems Learning Platform</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- ═══ TOP BAR ═══ -->
     <header id="top-bar">
       <div id="logo">⚙ MECHANISM</div>
+
       <nav id="track-nav">
         <button class="track-btn active" data-track="t1">
-          Track 1 · From Nothing to Computer
+          Track 1 · Hardware
         </button>
-        <button class="track-btn" data-track="t2">
-          Track 2 · Backend from First Principles
-        </button>
+        <button class="track-btn" data-track="t2">Track 2 · Backend</button>
       </nav>
+
       <div id="step-controls">
-        <button id="btn-reset" title="Reset">↺ Reset</button>
-        <button id="btn-step" title="Step">▶| Step</button>
-        <button id="btn-run" title="Run">▶ Run</button>
+        <button id="btn-reset" title="Reset">↺</button>
+        <button id="btn-step" title="Step">▶|</button>
+        <button id="btn-run" title="Run">▶</button>
         <span id="step-counter">step 0</span>
-        <label
-          >Speed
+        <label>
+          <span id="speed-label-txt">Speed</span>
           <input
             type="range"
             id="speed-slider"
@@ -31,11 +36,14 @@
             max="2000"
             value="600"
             step="100"
-        /></label>
+          />
+        </label>
       </div>
     </header>
 
+    <!-- ═══ APP BODY ═══ -->
     <div id="app-body">
+      <!-- Left sidebar / mobile drawer -->
       <nav id="module-list">
         <div class="track-label" id="t1-label">Track 1 · Hardware</div>
         <div id="t1-modules"></div>
@@ -45,39 +53,128 @@
         <div id="t2-modules" style="display: none"></div>
       </nav>
 
+      <!-- Main simulation canvas -->
       <main id="stage">
         <div id="stage-placeholder">
           <div class="placeholder-inner">
             <div class="placeholder-icon">⚙</div>
-            <h2>Select a module to begin</h2>
+            <h2>Select a module</h2>
             <p>
-              Each module is a runnable simulation.<br />Use
-              <strong>Step</strong> to advance one tick at a time,<br />or
-              <strong>Run</strong> to let it animate.
+              Each module is a runnable simulation.<br />
+              Use <strong>Step</strong> to advance one tick,<br />
+              or <strong>Run</strong> to animate.
             </p>
           </div>
         </div>
       </main>
 
+      <!-- Right inspector / mobile drawer -->
       <aside id="inspector">
         <section class="panel" id="state-panel">
           <h3>▸ State</h3>
-          <pre id="state-dump">—</pre>
+          <div class="panel-body">
+            <pre id="state-dump">—</pre>
+          </div>
         </section>
         <section class="panel" id="control-panel">
           <h3>▸ Controls</h3>
-          <div id="dynamic-controls"><em>Select a module</em></div>
+          <div class="panel-body">
+            <div id="dynamic-controls"><em>Select a module</em></div>
+          </div>
         </section>
         <section class="panel" id="failure-panel">
           <h3>▸ Inject Failure</h3>
-          <div id="failure-controls"><em>No module loaded</em></div>
+          <div class="panel-body">
+            <div id="failure-controls"><em>No module loaded</em></div>
+          </div>
         </section>
         <section class="panel" id="log-panel">
           <h3>▸ Event Log</h3>
-          <ul id="event-log"></ul>
+          <div class="panel-body">
+            <ul id="event-log"></ul>
+          </div>
         </section>
       </aside>
     </div>
+    <!-- /#app-body -->
+
+    <!-- ═══ TABLET: inspector slide toggle ═══ -->
+    <button
+      id="inspector-toggle"
+      onclick="toggleInspector()"
+      title="Toggle inspector"
+    >
+      Inspector ▸
+    </button>
+
+    <!-- ═══ MOBILE: bottom navigation bar ═══ -->
+    <nav id="bottom-bar">
+      <button
+        class="bottom-tab active"
+        id="tab-modules"
+        onclick="mobileTab('modules')"
+      >
+        <span class="tab-icon">☰</span>Modules
+      </button>
+      <button class="bottom-tab" id="tab-sim" onclick="mobileTab('sim')">
+        <span class="tab-icon">⚙</span>Simulation
+      </button>
+      <button
+        class="bottom-tab"
+        id="tab-inspector"
+        onclick="mobileTab('inspector')"
+      >
+        <span class="tab-icon">🔬</span>Inspector
+      </button>
+    </nav>
+
+    <script>
+      /* ── Mobile & tablet UI helpers ── */
+      let _activeTab = "modules";
+
+      function mobileTab(tab) {
+        _activeTab = tab;
+        document
+          .querySelectorAll(".bottom-tab")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById("tab-" + tab).classList.add("active");
+
+        const modList = document.getElementById("module-list");
+        const inspector = document.getElementById("inspector");
+
+        if (tab === "modules") {
+          modList.classList.toggle("open");
+          inspector.classList.remove("open");
+        } else if (tab === "inspector") {
+          inspector.classList.toggle("open");
+          modList.classList.remove("open");
+        } else {
+          modList.classList.remove("open");
+          inspector.classList.remove("open");
+        }
+      }
+
+      function toggleInspector() {
+        const inspector = document.getElementById("inspector");
+        const toggle = document.getElementById("inspector-toggle");
+        inspector.classList.toggle("open");
+        toggle.textContent = inspector.classList.contains("open")
+          ? "Inspector ◂"
+          : "Inspector ▸";
+      }
+
+      /* Close drawers when clicking on stage (mobile) */
+      document.addEventListener("click", (e) => {
+        if (window.innerWidth > 767) return;
+        const ml = document.getElementById("module-list");
+        const ins = document.getElementById("inspector");
+        const bar = document.getElementById("bottom-bar");
+        if (!ml.contains(e.target) && !bar.contains(e.target))
+          ml.classList.remove("open");
+        if (!ins.contains(e.target) && !bar.contains(e.target))
+          ins.classList.remove("open");
+      });
+    </script>
 
     <script src="app.js"></script>
   </body>

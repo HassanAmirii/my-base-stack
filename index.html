@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>How Computers Work</title>
+    <title>How Computers Work — From Nothing to Computer & Backend</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap"
@@ -24,20 +24,24 @@
     </nav>
 
     <!-- SIDEBAR OVERLAY (mobile) -->
-    <div id="overlay" onclick="closeSidebar()"></div>
+    <div id="overlay"></div>
 
     <!-- SIDEBAR -->
     <aside id="sidebar">
       <div class="sidebar-inner">
         <div class="sidebar-head">
-          <p class="sidebar-section-label">Track 1 — Hardware</p>
+          <p class="sidebar-section-label">
+            Track 1 — From Nothing to Computer
+          </p>
         </div>
         <div id="lesson-nav-t1" class="lesson-list"></div>
 
         <div class="sidebar-divider"></div>
 
         <div class="sidebar-head">
-          <p class="sidebar-section-label">Track 2 — Backend</p>
+          <p class="sidebar-section-label">
+            Track 2 — Backend from First Principles
+          </p>
         </div>
         <div id="lesson-nav-t2" class="lesson-list"></div>
       </div>
@@ -54,6 +58,15 @@
         <button id="btn-next" onclick="nextLesson()">Next →</button>
       </footer>
     </div>
+
+    <!-- Hidden template elements for dynamic content -->
+    <template id="bit-template">
+      <button class="bit-btn"></button>
+    </template>
+
+    <template id="register-template">
+      <div class="register-row"></div>
+    </template>
 
     <script src="app.js"></script>
   </body>
